@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Saule.Queries.Pagination;
 
 namespace Server.Controllers
 {
@@ -28,7 +29,7 @@ namespace Server.Controllers
         [ReturnsResource(typeof(OrderResource))]
         [DisableDefaultIncluded]
         [HttpGet]
-        public async Task<IEnumerable<OrderViewModel>> Get()
+        public async Task<IQueryable<OrderViewModel>> Get()
         {
             IList<OrderViewModel> orderViewModels = new List<OrderViewModel>();
             IEnumerable<Order> orders = await orderService.GetOrdersAsync();
@@ -36,7 +37,7 @@ namespace Server.Controllers
             {
                 orderViewModels.Add(await ToOrderViewModel(order));
             }
-            return orderViewModels.AsEnumerable();
+            return orderViewModels.AsQueryable();
         }
 
         private async Task<OrderViewModel> ToOrderViewModel(Order order)
@@ -60,7 +61,9 @@ namespace Server.Controllers
             return new CustomerViewModel
             {
                 Id = customer.Id,
-                Name = customer.Name
+                Name = customer.Name,
+                BillingAddress = customer.BillingAddress,
+                ShippingAddress = customer.ShippingAddress
             };
         }
     }

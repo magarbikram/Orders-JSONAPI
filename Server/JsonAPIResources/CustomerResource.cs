@@ -12,6 +12,8 @@ namespace Server.JsonAPIResources
         public CustomerResource()
         {
             Attribute("Name");
+            Attribute("ShippingAddress");
+            Attribute("BillingAddress");
         }
     }
 }
